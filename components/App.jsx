@@ -13,20 +13,17 @@ var title = "Some places in Italy";
 
 var searchOptions = { extract: (p) => p.name };
 
-var App = React.createClass({
-  getDefaultProps: function () {
-    return { places: data };
-  },
-
-  getInitialState: function() {
-    return { search: '' };
-  },
-
-  handleChange: function (event) {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { search: '' };
+  }
+  
+  handleChange(event) {
     this.setState({ search: event.target.value });
-  },
+  }
 
-  render: function () {
+  render() {
     var search = this.state.search
       , places = this.props.places;
 
@@ -48,9 +45,18 @@ var App = React.createClass({
         <div className="app">
           <h1>{ title }</h1>
           <ul className="master">
-            <li>{ this.search }<input name="search" onChange={ this.handleChange } value={ this.state.search } /></li>
+            <li>
+              <input 
+                name="search" 
+                onChange={ this.handleChange.bind(this) } 
+                value={ this.state.search } />
+            </li>
             { links }
-            <li><Link to="index"><small>(back to index)</small></Link></li>
+            <li>
+              <Link to="index">
+                <small>(back to index)</small>
+              </Link>
+            </li>
           </ul>
           <div className="detail">
             <RouteHandler />
@@ -59,6 +65,8 @@ var App = React.createClass({
       </DocumentTitle>
     );
   }
-});
+}
+
+App.defaultProps = { places: data };
 
 module.exports = App;
